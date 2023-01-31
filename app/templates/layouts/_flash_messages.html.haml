@@ -1,0 +1,5 @@
+- unless flash.empty?
+  .flash-container<
+    - flash.each do |flash_type, message|
+      %h3{ class: flash_type }<
+        = message

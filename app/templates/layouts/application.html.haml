@@ -1,0 +1,18 @@
+!!!
+%html{:lang => "en"}<
+  %head<
+    %meta{:charset => "utf-8"}
+    %title Hanami 2.0 Startup Template
+    %meta{ name: "title", content: "Hanami 2.0 Startup Template" }
+
+    = layout_stylesheet_link_tags_string
+
+  %body<
+    = render('layouts/header')
+
+    = render('layouts/flash_messages')
+
+    = yield
+
+    .javascripts<
+      = layout_script_tags_string

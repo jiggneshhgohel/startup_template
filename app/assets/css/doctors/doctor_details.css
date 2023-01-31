@@ -1,0 +1,9 @@
+.doctor-details .row {
+  margin-bottom: 10px;
+}
+
+.doctor-details label {
+  display: inline-block;
+  width: 150px;
+}
+

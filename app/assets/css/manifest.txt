@@ -1,0 +1,6 @@
+simple.min.css
+common.css
+
+doctors/doctor_details.css
+
+

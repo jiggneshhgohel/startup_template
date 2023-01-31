@@ -1,0 +1,11 @@
+.flash-container .success {
+  color: green;
+}
+
+.flash-container .error {
+  color: red;
+}
+
+.flash-container .notice {
+  color: blue;
+}

@@ -1,0 +1,46 @@
+- doctor_name_data_attr_name = 'data-name'
+
+%div<
+  = new_doctor_link
+
+%div.doctors-listing-container<
+  %h3 Doctors
+
+  %article<
+    %table<
+      %thead<
+        %tr<
+          %th Name
+          %th Qualification
+          %th Created At
+          %th Updated At
+          %th Actions
+
+      %tbody<
+        - doctors.each do |doctor_obj|
+          - doctor_id = doctor_obj.id
+          - name = doctor_obj.name
+          - qualification = doctor_obj.qualification
+          - created_at = format_timestamp(timestamp: doctor_obj.created_at)
+          - updated_at = format_timestamp(timestamp: doctor_obj.updated_at)
+
+          %tr.doctor-row<
+            %td.doctor-name{ doctor_name_data_attr_name => name  }<
+              = show_doctor_link(doctor_id: doctor_id, doctor_name: name)
+
+            %td= qualification
+            %td= created_at
+            %td= updated_at
+            %td<
+              %span<
+                = edit_doctor_link(doctor_id: doctor_id)
+
+              %span<
+                = remove_doctor_button(doctor_id: doctor_id)
+
+
+%div.remove-doctor-form-container{ style: 'display: none;' }<
+  -# Note: This is intended to be submitted by JS when Remove button for a Doctor
+  -# is clicked in the listing rendered by this template.
+  = remove_doctor_form
+
