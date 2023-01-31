@@ -89,6 +89,13 @@
 
 * Clone the application.
 
+* Run following commands to create a gemset and install the gems:
+
+  ```
+   <app_root>$ cd ../<app_root>
+   <app_root>$ bundle
+  ```
+
 * Under `<app_root>` create `.env` and `.env.test` files
 
 * In `.env` file set following env variables: SESSION_SECRET, DATABASE_URL. Example content:
