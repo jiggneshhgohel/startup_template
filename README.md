@@ -95,6 +95,15 @@
    <app_root>$ cd ../<app_root>
    <app_root>$ bundle
   ```
+  
+* Create the `development` and `test` environments database. For e.g. for development env create a DB name `hanami_startup_template_dev` and specify it in the `DATABASE_URL` environment variable set. Refer **Environment Variables** section for more details regarding that environment variable.
+
+* Create the tables in the `development` and `test` environment databases by running following commands:
+
+  ```
+  	<app_root>$ bundle exec rake db:migrate
+	<app_root>$ HANAMI_ENV=test bundle exec rake db:migrate
+  ```
 
 * Under `<app_root>` create `.env` and `.env.test` files
 
