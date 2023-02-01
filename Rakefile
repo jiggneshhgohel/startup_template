@@ -67,6 +67,8 @@ namespace :assets_custom_manager do
 
     minified_asset_file_dir_path = File.dirname(minified_asset_file_absolute_path)
 
+    StartupTemplate::FilesUtil.create_directory_if_unavailable(directory_path: minified_asset_file_dir_path)
+
     # Delete existing asset file for production env
     files_removed =
       StartupTemplate::FilesUtil

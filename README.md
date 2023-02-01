@@ -2,17 +2,17 @@
 
 * This is a startup template for a web application based on Hanami 2.0 which can be cloned and adopted for personal use.
 
-* At the time of writing this the application has CRUD (Create-Read-Update-Delete) operations implemented for a business entity `Doctor`. 
+* At the time of writing this the application has CRUD (Create-Read-Update-Delete) operations implemented for a model (or business-entity) `Doctor`. 
 
 * For interacting with the database layer of the application the application utilizes the [ROM Repository](https://rom-rb.org/learn/repository/5.2/) as the primary interface and to work with the persisted data, instead of directly working with relation tuples, [Entity](https://rom-rb.org/learn/core/5.2/structs/#auto-struct-with-custom-classes) concept is used.
 
 * For implementing the business logic [dry-transaction](https://dry-rb.org/gems/dry-transaction/0.13/) gem is utilized. 
 
-* The application utilizes very simple, straightforward and no suprises approach for using CSS and JS assets. By default it uses [simplecss](https://simplecss.org/) as basic library for styling pages and [jQuery](https://api.jquery.com/) as basic library for working with Javascript.
+* The application utilizes very simple, straightforward and *no suprises* approach for using CSS and JS assets. By default it uses [simplecss](https://simplecss.org/) as basic library for styling pages and [jQuery](https://api.jquery.com/) as basic library for working with Javascript.
 
-* **Note**: The application internally uses [hanami view](https://github.com/hanami/view) and [hanami helpers](https://github.com/hanami/helpers). Officially their 2.0-compatible versions have not been released so the application directly uses the `main` branch
-  codebase from their github repositories. For more details please refer `Gemfile` of
-  this application.
+* The application internally uses [hanami view](https://github.com/hanami/view) and [hanami helpers](https://github.com/hanami/helpers). **Note: Officially 2.0-compatible versions of those gems have not been released so the application directly uses the `main` branch codebase from their github repositories. For more details please refer `Gemfile` of this application.**
+
+* The application uses [HAML](https://haml.info/) for templating front-end views.
 
 * The application logs are configured to be written by default to `<app_root>/log/<env_name>.log` file. For more details refer `<app_root>/config/app.rb`.
 
@@ -77,7 +77,7 @@
   1. To generate single minified version one for each of the following asset types: CSS, JS run following command:
 
   ```
-    app_root$ HANAMI_ENV=production bundle exec rake assets_custom_manager:minify_assets
+    <app_root>$ HANAMI_ENV=production bundle exec rake assets_custom_manager:minify_assets
   ```
 
     That should generate files `application.<fingerprint>.css` and `application.<fingerprint>.js` under `public/css` and `public/js` folders, respectively.
@@ -85,39 +85,65 @@
     ***Note: If you modified your assets on your development environment and want to deploy those changes to production env then you must run the above rake task on production environment.***
 
 
-### Development Environment setup
+### Development Environment Setup
 
-* Clone the application.
+* Pre-requisites:
 
-* Run following commands to create a gemset and install the gems:
+  1. Ruby 3.1.2 must be installed. The Ruby version is specified in the file `.ruby-version` that should be available under `<app_root>` folder when cloning the application.
+  
+  2. You should have a ruby version manager installed which supports creating gemsets. For e.g. the author of these instructions used [RVM](https://rvm.io/). The gemset name is specified in the file `.ruby-gemset` that should be available under `<app_root>` folder when cloning the application.
+
+* Clone the application by running following commands:
+
+  ```
+  	<app_root>$ git clone https://github.com/jiggneshhgohel/startup_template.git .
+  ```
+
+* Create a RVM gemset by running following command:
 
   ```
    <app_root>$ cd ../<app_root>
+  ```
+  
+  That should generate output similar to following
+  
+  ```
+   ruby-3.1.2 - #gemset created /home/jignesh/.rvm/gems/ruby-3.1.2@startup-template-hanami-2-0
+   ruby-3.1.2 - #generating startup-template-hanami-2-0 wrappers.............
+  ```
+  
+*  Install the gems by running following command:
+  
+  ```
    <app_root>$ bundle
   ```
   
-* Create the `development` and `test` environments database. For e.g. for development env create a DB name `hanami_startup_template_dev` and specify it in the `DATABASE_URL` environment variable set. Refer **Environment Variables** section for more details regarding that environment variable.
+* Create the databases for `development` and `test` environments. PostgreSQL is recommended as a DBMS. For e.g. for `development` env create a DB name `hanami_startup_template_dev` and for `test` env create a DB name `hanami_startup_template_test`.
 
-* Create the tables in the `development` and `test` environment databases by running following commands:
+  *Note: The name used should be specified in the `DATABASE_URL` environment variable set. Refer **Environment Variables** section for more details regarding that environment variable.*
+
+* Under `<app_root>` create `.env` and `.env.test` files. These are expected by [dotenv](https://github.com/bkeepers/dotenv) gem which the application uses for managing environment variables.
+
+* In `.env` file set following env variables: `SESSION_SECRET`, `DATABASE_URL`. Example content:
+
+  ```
+    SESSION_SECRET=686332347898a9728847b2d5f3881038
+    DATABASE_URL=postgres://postgres:root@localhost:5432/hanami_startup_template_dev
+  ```
+  
+  *Note: For more details regarding the values for the env variables please refer the **Environment Variables** section above.*
+
+* In `.env.test` file set following env variables: `DATABASE_URL`. Example content:
+
+  ```
+    DATABASE_URL=postgres://postgres:root@localhost:5432/hanami_startup_template_test
+  ```
+  
+* Create the relation tables in databases for `development` and `test` environments by running following commands:
 
   ```
   	<app_root>$ bundle exec rake db:migrate
 	<app_root>$ HANAMI_ENV=test bundle exec rake db:migrate
-  ```
-
-* Under `<app_root>` create `.env` and `.env.test` files
-
-* In `.env` file set following env variables: SESSION_SECRET, DATABASE_URL. Example content:
-
-  ```
-    SESSION_SECRET=e70cd214a6015b3bf9538bec7ad27564
-    DATABASE_URL=postgres://postgres:root@localhost:5432/hanami_startup_template_dev
-  ```
-
-* In `.env.test` file set following env variables: DATABASE_URL. Example content:
-
-  ```
-    DATABASE_URL=postgres://postgres:root@localhost:5432/hanami_startup_template_test
   ```
   
  ### Running application
@@ -130,7 +156,7 @@
 	
 	That should start the server by default for **development** environment.
 
- 2. Open a browser and add following URL to the address bar http://localhost:2300/ and hit Enter and you see a home page stating following:
+ 2. Open a browser and add URL http://localhost:2300/ to the address bar and hit Enter and you see a home page stating following:
 
 	```
      Welcome to Startup Template for Hanami 2.0 application
@@ -139,3 +165,32 @@
 ### Running Tests
 
 Note: At the time of writing this there are no tests added.
+
+### General Guidelines For Development
+
+* All persistence relation classes should be defined under to `lib/startup_template/persistence/relations`
+
+* All repository classes should be defined under `lib/startup_template/repositories`
+
+* All models (or business-entities) should be defined under `lib/startup_template/entities`
+
+* All business-logic (or service-layer-logic) should be defined under `lib/startup_template/business_transactions`
+
+* Any custom [dry-types](https://dry-rb.org/gems/dry-types/1.2/custom-types/) should be to `lib/startup_template/types.rb` and those should be registered in `lib/startup_template/type_container.rb`. For more details on Custom Types Registration please refer https://dry-rb.org/gems/dry-schema/1.10/advanced/custom-types/. 
+
+* All action classes should be defined under `app/actions/<resource_name>`. For e.g. refer `app/actions/doctors/index.rb`.
+
+* All view classes should be defined under `app/views/<resource_name>`. For e.g. refer `app/views/doctors/index.rb`.
+
+* Every view class should extend from `View::Base` (`app/view/base.rb`). `View::Base` is the base class which gives access to `request`, `session`, `flash`, `params` (request params). **Note: This base class should not be bloated with helpers meant for use in view templates. For that purpose Scope classes for views should be used.**
+
+* A scope class should be defined for each view class and it should be configured in the view class using `config.scope` option. For e.g. refer `app/views/doctors/scopes/index.rb` and `app/views/doctors/index.rb`.
+
+* Every scope class should extend from `View::Scope` (`app/view/scope.rb`). `View::Scope` is the base class which includes common helpers (including [hanami helpers](https://github.com/hanami/helpers)) for use in view classes and/or view templates.
+
+* The view templates should be defined under `app/templates/<resource_name>`. For e.g. refer `app/templates/doctors/index.html.haml`.
+
+* All the helper code meant to be utilized by the view template should be defined in the scope class configured for the view class which renders the view template. For e.g. refer scope class `app/views/doctors/scopes/index.rb` configured for view class `app/views/doctors/index.rb`. That scope class contains all helper methods used in the view template `app/templates/doctors/index.html.haml` rendered by view class `app/views/doctors/index.rb`.
+
+* CSS and JS assets should be added to respective folders under `app/assets`. After adding them DO NOT FORGET to add their entries to the respective manifest file `manifest.txt` available under asset-type (CSS/JS) folder under `app/assets`.
+

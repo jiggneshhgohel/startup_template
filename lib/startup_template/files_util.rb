@@ -39,6 +39,13 @@ module StartupTemplate
       File.open(file_path, 'a') { |file| file.write(contents) }
     end
 
+    def create_directory_if_unavailable(directory_path:)
+      # Reference: https://stackoverflow.com/a/12946447/936494
+      return if File.exists?(directory_path)
+
+      FileUtils.mkdir_p(directory_path)
+    end
+
     # For a valid mode value refer https://blog.udemy.com/ruby-file-open/
     def create_file(file_path:, contents:, mode:)
       File.write(file_path, contents, mode: mode)
